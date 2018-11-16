@@ -33,6 +33,8 @@ public class LoginPresenter implements LoginContracts.Presenter {
 
     @Override
     public void onDestory() {
-
+        if (null != view){
+            view = null;
+        }
     }
 }

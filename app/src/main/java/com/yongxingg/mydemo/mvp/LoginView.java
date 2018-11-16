@@ -56,6 +56,15 @@ public class LoginView extends AppCompatActivity implements LoginContracts.View{
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (null != mPresenter){
+            mPresenter.onDestory();
+            mPresenter = null;
+        }
+    }
+
+    @Override
     public void setPresenter(LoginContracts.Presenter presenter) {
         mPresenter = presenter;
     }
