@@ -9,24 +9,30 @@ public class LoginPresenter implements LoginContracts.Presenter {
         this.view = baseView;
         this.view.setPresenter(this);
     }
+
     @Override
-    public boolean checkUser() {
-        if (view.getUserName().equals("")&& view.getPassword().equals("")){
-            return false;
-        }
-        return true;
+    public boolean checkUser(UserBean bean) {
+
+        return false;
     }
 
     @Override
     public void getNetData() {
         //获取数据返回View
 //        view.success();
-        view.setData("返回数据");
+        UserLoginModel model = new UserLoginModel();
+        UserBean bean = model.getUserInfoData(view.getUserInfo());
+        view.setData(bean);
     }
 
     @Override
     public void submit() {
 
+
+    }
+
+    @Override
+    public void onDestory() {
 
     }
 }

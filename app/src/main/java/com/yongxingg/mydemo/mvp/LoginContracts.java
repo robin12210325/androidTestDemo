@@ -5,12 +5,11 @@ package com.yongxingg.mydemo.mvp;
  */
 public interface LoginContracts {
     public interface View extends LoginBase.BaseView<Presenter> {
-        String getUserName();
-        String getPassword();
-        void setData(String string);
+        UserBean getUserInfo();
+        void setData(UserBean string);
     }
     public interface Presenter extends LoginBase.BasePresenter{
-        boolean checkUser();
+        boolean checkUser(UserBean bean);
         void getNetData();
         void submit();
     }

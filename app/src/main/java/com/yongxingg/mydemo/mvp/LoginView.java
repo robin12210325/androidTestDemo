@@ -24,7 +24,7 @@ public class LoginView extends AppCompatActivity implements LoginContracts.View{
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean isCheck = mPresenter.checkUser();
+                boolean isCheck = mPresenter.checkUser(getUserInfo());
                 if (isCheck){
                     mPresenter.submit();
                 }
@@ -33,23 +33,21 @@ public class LoginView extends AppCompatActivity implements LoginContracts.View{
     }
 
     @Override
-    public String getUserName() {
-        return username.getText().toString().trim();
+    public UserBean getUserInfo() {
+        UserBean bean = new UserBean();
+        bean.setName(username.getText().toString().trim());
+        bean.setPassword(password.getText().toString().trim());
+        return bean;
     }
 
     @Override
-    public String getPassword() {
-        return password.getText().toString().trim();
-    }
-
-    @Override
-    public void setData(String string) {
+    public void setData(UserBean string) {
 
     }
 
     @Override
     public void showDialog() {
-
+        //
     }
 
     @Override

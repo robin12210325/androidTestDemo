@@ -10,6 +10,6 @@ public interface LoginBase {
         void setPresenter(T presenter);
     }
     public interface BasePresenter{
-
+        void onDestory();
     }
 }
