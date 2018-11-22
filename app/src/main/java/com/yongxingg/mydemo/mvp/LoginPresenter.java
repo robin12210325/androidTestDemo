@@ -9,11 +9,9 @@ public class LoginPresenter implements LoginContracts.Presenter {
         this.view = baseView;
         this.view.setPresenter(this);
     }
-
     @Override
     public boolean checkUser(UserBean bean) {
-
-        return false;
+        return true;
     }
 
     @Override
@@ -27,10 +25,7 @@ public class LoginPresenter implements LoginContracts.Presenter {
 
     @Override
     public void submit() {
-
-
     }
-
     @Override
     public void onDestory() {
         if (null != view){

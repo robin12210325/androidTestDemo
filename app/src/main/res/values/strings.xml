@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">MyDemo</string>
+    <string name="title_activity_bottom_navigation">BottomNavigationActivity</string>
+    <string name="title_all">全部</string>
+    <string name="title_android">android</string>
+    <string name="title_ios">ios</string>
+    <string name="title_restvideo">休息视频</string>
+    <string name="title_Expanding_resources">拓展资源</string>
+    <string name="title_font">前端</string>
+    <string name="title_welfare">福利</string>
 </resources>
