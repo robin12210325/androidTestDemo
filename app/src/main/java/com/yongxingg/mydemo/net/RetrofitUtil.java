@@ -41,7 +41,6 @@ public class RetrofitUtil {
             synchronized(RetrofitUtil.class){
                 if (retrofit == null) {
                     //这里有个很关键的地方，就是传入App的上下文啦。
-//                    retrofit = new Retrofit.Builder().build();
                     ClearableCookieJar cookieJar =
                             new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(App.getInstance()));
                     OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();                //okhttp创建，写入缓存机制，还有addInterceptor

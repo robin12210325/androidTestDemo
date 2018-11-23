@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.yongxingg.mydemo.R;
+import com.yongxingg.mydemo.UI.androidUI.AndroidFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,14 +30,19 @@ public class BottomNavigationActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_android:
+                    viewPager.setCurrentItem(0,false);
                     return true;
                 case R.id.navigation_ios:
+                    viewPager.setCurrentItem(1,false);
                     return true;
                 case R.id.navigation_restvideo:
+                    viewPager.setCurrentItem(2,false);
                     return true;
                 case R.id.navigation_font:
+                    viewPager.setCurrentItem(3,false);
                     return true;
                 case R.id.navigation_Expanding_resources:
+                    viewPager.setCurrentItem(4,false);
                     return true;
             }
             return false;
@@ -54,7 +60,6 @@ public class BottomNavigationActivity extends AppCompatActivity {
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
@@ -90,32 +95,8 @@ public class BottomNavigationActivity extends AppCompatActivity {
             unbinder.unbind();
         }
     }
-
-    private void getTodayNews() {
-//        Call<TodayNewsModel> newsModelCall = RetrofitUtil.getInstance().getTodayNews();
-//        newsModelCall.enqueue(new Callback<TodayNewsModel>() {
-//            @Override
-//            public void onResponse(Call<TodayNewsModel> call, Response<TodayNewsModel> response) {
-//                TodayNewsModel todayNewsModel = response.body();
-//            }
-//
-//            @Override
-//            public void onFailure(Call<TodayNewsModel> call, Throwable t) {
-//
-//            }
-//        });
-//        RetrofitUtil.getInstance().getTodayNews().subscribeOn(io.reactivex.schedulers.Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Consumer<TodayNewsModel>() {
-//                    @Override
-//                    public void accept(TodayNewsModel todayNewsModel) throws Exception {
-//
-//                    }
-//                });
-    }
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-
         adapter.addFragment(AndroidFragment.newInstance("android"));
         adapter.addFragment(BaseFragment.newInstance("图书"));
         adapter.addFragment(BaseFragment.newInstance("发现"));
