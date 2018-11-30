@@ -30,7 +30,8 @@ public class AndroidRecycleViewAdapter extends RecyclerView.Adapter<AndroidRecyc
     }
     public void setLists(List<AndroidModel.ResultsBean> datas){
         list.clear();
-        this.list = datas;
+        this.list.addAll(datas);
+        System.out.println("androidFragentData=" + list.size() + "//" + String.valueOf(list));
         this.notifyDataSetChanged();
     }
     @NonNull

@@ -49,7 +49,7 @@ public class PicRecyAdapter extends RecyclerView.Adapter<PicRecyAdapter.PicViewH
 
     @Override
     public int getItemCount() {
-        return datas.size();
+        return datas == null?0:datas.size();
     }
 
     static class PicViewHolder extends RecyclerView.ViewHolder {

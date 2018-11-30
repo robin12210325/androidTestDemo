@@ -1,5 +1,7 @@
 package com.yongxingg.mydemo.UI.androidUI;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,18 +14,27 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.yongxingg.mydemo.R;
+import com.yongxingg.mydemo.animView.DefaultAnimations;
+import com.yongxingg.mydemo.animView.DefaultSort;
+import com.yongxingg.mydemo.animView.Spruce;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by gaoyongxing on 2018-11-22.
  */
 public class AndroidFragment extends Fragment implements AndroidContracts.View{
     public static final String pageCount = "10";
-    public static final int pageNum = 1;
+    public static int pageNum = 1;
     private AndroidContracts.Presenter mPresenter;
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private LinearLayoutManager mLinearLayoutManager;
     private AndroidRecycleViewAdapter myRecycleViewAdapter;
+    List<AndroidModel.ResultsBean> beans = new ArrayList<>();
+
+    private Animator spruceAnimator;
     public static AndroidFragment newInstance(String info) {
         Bundle args = new Bundle();
         AndroidFragment fragment = new AndroidFragment();
@@ -44,17 +55,55 @@ public class AndroidFragment extends Fragment implements AndroidContracts.View{
         mRecyclerView = (RecyclerView) view.findViewById(R.id.androidList);
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.androidSwipeFresh);
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext()) {
+            @Override
+            public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+                super.onLayoutChildren(recycler, state);
+//                initSpruce();
+            }
+        };
+//        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
         myRecycleViewAdapter = new AndroidRecycleViewAdapter(this.getActivity());
         mRecyclerView.setAdapter(myRecycleViewAdapter);
         mPresenter = new AndroidPresenter(this);
         getData(pageNum);
+        initSpruce();
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                pageNum = 1;
+                beans.clear();
                 getData(pageNum);
             }
         });
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                LinearLayoutManager lm = (LinearLayoutManager) recyclerView.getLayoutManager();
+                int totalItemCount = recyclerView.getAdapter().getItemCount();
+                int lastVisibleItemPosition = lm.findLastVisibleItemPosition();
+                int visibleItemCount = recyclerView.getChildCount();
+
+                if (newState == RecyclerView.SCROLL_STATE_IDLE
+                        && lastVisibleItemPosition == totalItemCount - 1
+                        && visibleItemCount > 0) {
+                    //加载更多
+                    pageNum ++;
+                    getData(pageNum);
+
+                }
+
+            }
+        });
+    }
+    private void initSpruce() {
+        spruceAnimator = new Spruce.SpruceBuilder(mRecyclerView)
+                .sortWith(new DefaultSort(100))
+                .animateWith(DefaultAnimations.shrinkAnimator(mRecyclerView, 800),
+                        ObjectAnimator.ofFloat(mRecyclerView, "translationX", -mRecyclerView.getWidth(), 0f).setDuration(800))
+                .start();
     }
     //获取数据
     private void getData(int pageNum){
@@ -82,17 +131,19 @@ public class AndroidFragment extends Fragment implements AndroidContracts.View{
         if (null != presenter){
             this.mPresenter = presenter;
         }
-
-
     }
-
     @Override
     public void showData(AndroidModel string) {
-        System.out.println("androidFragent=" + string.getResults().get(0).getDesc());
+        if (pageNum == 1){
+            beans.addAll(string.getResults());
+            beans = string.getResults();
+        }else {
+            beans.addAll(string.getResults());
+        }
         if (mSwipeRefreshLayout.isRefreshing()){
             mSwipeRefreshLayout.setRefreshing(false);
         }
-        myRecycleViewAdapter.setLists(string.getResults());
+        myRecycleViewAdapter.setLists(beans);
     }
 
     @Override
