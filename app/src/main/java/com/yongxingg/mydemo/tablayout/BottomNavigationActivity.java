@@ -101,7 +101,7 @@ public class BottomNavigationActivity extends AppCompatActivity {
         adapter.addFragment(BaseFragment.newInstance("图书"));
         adapter.addFragment(BaseFragment.newInstance("发现"));
         adapter.addFragment(BaseFragment.newInstance("更多"));
-        adapter.addFragment(BaseFragment.newInstance("更多"));
+        adapter.addFragment(BaseFragment.newInstance("个人中心"));
         viewPager.setAdapter(adapter);
     }
 }

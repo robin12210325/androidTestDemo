@@ -65,8 +65,6 @@ public class MyRecycleView extends RecyclerView {
                     parent.requestDisallowInterceptTouchEvent(false);
                 }
                 if (xDistance >= mTouchSlop && xDistance > yDistance) {
-                }else{
-//                    transInToDetail();
                 }
                 break;
         }
