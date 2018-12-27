@@ -3,15 +3,13 @@ package com.yongxingg.mydemo.news;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.yongxingg.mydemo.model.BaseModel;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by gaoyongxing on 2018-11-23.
  */
-public class NewsTypesModel extends BaseModel implements Parcelable {
+public class NewsTypesModel  implements Parcelable {
 
     /**
      * error : false
@@ -37,7 +35,7 @@ public class NewsTypesModel extends BaseModel implements Parcelable {
         this.results = results;
     }
 
-    public static class ResultsBean extends BaseModel implements Parcelable{
+    public static class ResultsBean implements Parcelable{
         /**
          * _id : 57c83777421aa97cbd81c74d
          * en_name : wow

@@ -23,10 +23,11 @@ public class AndroidRecycleViewAdapter extends RecyclerView.Adapter<AndroidRecyc
     private List<AndroidModel.ResultsBean> list = new ArrayList<>();
     PicRecyAdapter picRecyAdapter;
     LinearLayoutManager linearLayoutManager;
+
+    private LayoutInflater layoutInflater;
     public AndroidRecycleViewAdapter(Context mContext){
         this.mContext = mContext;
-        linearLayoutManager = new LinearLayoutManager(mContext);
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        this.layoutInflater = LayoutInflater.from(mContext);
     }
     public void setLists(List<AndroidModel.ResultsBean> datas){
         list.clear();
@@ -37,7 +38,7 @@ public class AndroidRecycleViewAdapter extends RecyclerView.Adapter<AndroidRecyc
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_android_fragment_item, viewGroup,false);
+        View view = layoutInflater.inflate(R.layout.layout_android_fragment_item,viewGroup,false);
         return new ViewHolder(view);
     }
 
@@ -46,9 +47,16 @@ public class AndroidRecycleViewAdapter extends RecyclerView.Adapter<AndroidRecyc
         viewHolder.androidPublishedAt.setText(list.get(i).getPublishedAt());
         viewHolder.androidDesc.setText(list.get(i).getDesc());
         viewHolder.androidUrl.setText(list.get(i).getUrl());
-        linearLayoutManager = new LinearLayoutManager(mContext);
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        viewHolder.myRecycleView.setLayoutManager(linearLayoutManager);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext) {
+            @Override
+            public RecyclerView.LayoutParams generateDefaultLayoutParams() {
+                return new RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT);
+            }
+        };
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        viewHolder.myRecycleView.setLayoutManager(layoutManager);
 
         picRecyAdapter = new PicRecyAdapter(mContext, list.get(i).getImages());
         viewHolder.myRecycleView.setAdapter(picRecyAdapter);

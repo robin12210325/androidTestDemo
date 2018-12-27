@@ -2,106 +2,140 @@ package com.yongxingg.mydemo.tablayout;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.yongxingg.mydemo.R;
 import com.yongxingg.mydemo.UI.androidUI.AndroidFragment;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class BottomNavigationActivity extends AppCompatActivity {
-    ViewPager viewPager;
-    @BindView(R.id.container)
-    ConstraintLayout container;
-    Unbinder unbinder;
-    BottomNavigationView navigation;
-    private MenuItem menuItem;
+    private List<Fragment> fragmentList;
+    private List<Integer> iconList;
+    private Integer[] bottomTabIcon = {R.mipmap.home,R.mipmap.home,R.mipmap.home,R.mipmap.home};
+    private List<Integer> iconPressList;
+    private Integer[] bottomIconPress = {R.mipmap.home_press,R.mipmap.home_press,
+            R.mipmap.home_press,R.mipmap.home_press};
+    private WeakReference<FragmentTransaction> ft;
+    private Integer pos_tab = null;
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+    private static boolean enableExit = false;
+//    private static MyHandler myHandler = new MyHandler();
 
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_android:
-                    viewPager.setCurrentItem(0,false);
-                    return true;
-                case R.id.navigation_ios:
-                    viewPager.setCurrentItem(1,false);
-                    return true;
-                case R.id.navigation_restvideo:
-                    viewPager.setCurrentItem(2,false);
-                    return true;
-                case R.id.navigation_font:
-                    viewPager.setCurrentItem(3,false);
-                    return true;
-                case R.id.navigation_Expanding_resources:
-                    viewPager.setCurrentItem(4,false);
-                    return true;
-            }
-            return false;
-        }
-    };
+//    @BindView(R.id.bottom_tab_layout)
+    TabLayout bottmeTab;
 
+
+    DrawerLayout drawerLayout;
+
+    NavigationView navigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bottom_navigation);
-        unbinder = ButterKnife.bind(this);
-        navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                if (menuItem != null) {
-                    menuItem.setChecked(false);
-                } else {
-                    navigation.getMenu().getItem(0).setChecked(false);
-                }
-                menuItem = navigation.getMenu().getItem(position);
-                menuItem.setChecked(true);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
-
-        //禁止ViewPager滑动
-//        viewPager.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                return true;
-//            }
-//        });
-
-        setupViewPager(viewPager);
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (null != unbinder) {
-            unbinder.unbind();
-        }
+        bottmeTab = (TabLayout) findViewById(R.id.bottom_tab_layout);
+        navigationView = (NavigationView) findViewById(R.id.nav_left);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        initView();
     }
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(AndroidFragment.newInstance("android"));
+        adapter.addFragment(BaseFragment.newInstance("资讯"));
         adapter.addFragment(BaseFragment.newInstance("图书"));
         adapter.addFragment(BaseFragment.newInstance("发现"));
         adapter.addFragment(BaseFragment.newInstance("更多"));
         adapter.addFragment(BaseFragment.newInstance("个人中心"));
         viewPager.setAdapter(adapter);
+    }
+    public View getTabView(String title, int image_src) {
+        View v = LayoutInflater.from(getApplicationContext()).inflate(R.layout.tab_item_view, null);
+        TextView textView = (TextView) v.findViewById(R.id.textview);
+        textView.setText(title);
+        ImageView imageView = (ImageView) v.findViewById(R.id.imageview);
+        imageView.setImageResource(image_src);
+        return v;
+    }
+    private void initView() {
+        iconList = Arrays.asList(bottomTabIcon);
+        iconPressList = Arrays.asList(bottomIconPress);
+        fragmentList = new ArrayList<>();
+        fragmentList.add(new WeakReference<>(AndroidFragment.newInstance("android")).get());
+        fragmentList.add(new WeakReference<>(BaseFragment.newInstance("图书")).get());
+        fragmentList.add(new WeakReference<>(BaseFragment.newInstance("图书")).get());
+        fragmentList.add(new WeakReference<>(BaseFragment.newInstance("图书")).get());
+
+        bottmeTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                ft = new WeakReference<>(getSupportFragmentManager().beginTransaction());
+                if(pos_tab != null) {
+                    bottmeTab.getTabAt(pos_tab).setIcon(iconList.get(pos_tab));
+                    Fragment preFragment = fragmentList.get(pos_tab);
+                    Fragment fragment = fragmentList.get(tab.getPosition());
+                    if(fragment.isAdded()) {
+                        ft.get().hide(preFragment).show(fragment).commit();
+                    }else {
+                        ft.get().hide(preFragment)
+                                .add(R.id.fragment_content,fragment).commit();
+                    }
+                }else {
+                    ft.get().add(R.id.fragment_content,fragmentList.get(0))
+                            .commit();
+                }
+                pos_tab = tab.getPosition();
+                bottmeTab.getTabAt(pos_tab).setIcon(iconPressList.get(pos_tab));
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        bottmeTab.addTab(bottmeTab.newTab().setIcon(R.mipmap.home).setText("首页"));
+        bottmeTab.addTab(bottmeTab.newTab().setIcon(R.mipmap.home).setText("关注"));
+        bottmeTab.addTab(bottmeTab.newTab().setIcon(R.mipmap.home).setText("好友"));
+        bottmeTab.addTab(bottmeTab.newTab().setIcon(R.mipmap.home).setText("我"));
+
+        bottmeTab.getTabAt(0).setCustomView(getTabView("关注",R.mipmap.home));
+        bottmeTab.getTabAt(1).setCustomView(getTabView("发现",R.mipmap.home));
+        bottmeTab.getTabAt(2).setCustomView(getTabView("个人",R.mipmap.home));
+        bottmeTab.getTabAt(3).setCustomView(getTabView("我",R.mipmap.home));
+
+
+        navigationView.setItemIconTintList(null);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.navigation_android:
+                        Toast.makeText(BottomNavigationActivity.this,"asacdasc",Toast.LENGTH_LONG).show();
+                        break;
+                }
+                drawerLayout.closeDrawer(GravityCompat.START);
+                return true;
+            }
+        });
     }
 }

@@ -68,7 +68,7 @@ public class AndroidFragment extends Fragment implements AndroidContracts.View{
         mRecyclerView.setAdapter(myRecycleViewAdapter);
         mPresenter = new AndroidPresenter(this);
         getData(pageNum);
-        initSpruce();
+//        initSpruce();
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -92,7 +92,6 @@ public class AndroidFragment extends Fragment implements AndroidContracts.View{
                     //加载更多
                     pageNum ++;
                     getData(pageNum);
-
                 }
 
             }
