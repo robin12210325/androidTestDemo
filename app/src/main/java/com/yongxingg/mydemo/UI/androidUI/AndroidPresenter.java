@@ -41,7 +41,13 @@ public class AndroidPresenter implements AndroidContracts.Presenter {
     }
 
     @Override
+    public void onCreate() {
+
+    }
+
+    @Override
     public void onDestory() {
+        System.out.println("AndroidPresenter=" + "onDestory");
         if (null != view){
             view = null;
         }

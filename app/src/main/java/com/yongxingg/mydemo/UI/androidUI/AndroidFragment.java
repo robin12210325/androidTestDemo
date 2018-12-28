@@ -67,6 +67,7 @@ public class AndroidFragment extends Fragment implements AndroidContracts.View{
         myRecycleViewAdapter = new AndroidRecycleViewAdapter(this.getActivity());
         mRecyclerView.setAdapter(myRecycleViewAdapter);
         mPresenter = new AndroidPresenter(this);
+        getLifecycle().addObserver(mPresenter);
         getData(pageNum);
 //        initSpruce();
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -145,12 +146,17 @@ public class AndroidFragment extends Fragment implements AndroidContracts.View{
         myRecycleViewAdapter.setLists(beans);
     }
 
-    @Override
+
+    /**
+     * 如果采用lifecycle的话 就不需要在view中通知presenter的ondestory了
+     * presenter可以自动根据activity的生命周期同步
+     */
+   /* @Override
     public void onDestroy() {
         super.onDestroy();
         if (null != mPresenter){
             mPresenter.onDestory();
             mPresenter = null;
         }
-    }
+    }*/
 }

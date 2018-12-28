@@ -7,7 +7,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -53,15 +52,6 @@ public class BottomNavigationActivity extends AppCompatActivity {
         navigationView = (NavigationView) findViewById(R.id.nav_left);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         initView();
-    }
-    private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(BaseFragment.newInstance("资讯"));
-        adapter.addFragment(BaseFragment.newInstance("图书"));
-        adapter.addFragment(BaseFragment.newInstance("发现"));
-        adapter.addFragment(BaseFragment.newInstance("更多"));
-        adapter.addFragment(BaseFragment.newInstance("个人中心"));
-        viewPager.setAdapter(adapter);
     }
     public View getTabView(String title, int image_src) {
         View v = LayoutInflater.from(getApplicationContext()).inflate(R.layout.tab_item_view, null);
@@ -122,6 +112,7 @@ public class BottomNavigationActivity extends AppCompatActivity {
         bottmeTab.getTabAt(1).setCustomView(getTabView("发现",R.mipmap.home));
         bottmeTab.getTabAt(2).setCustomView(getTabView("个人",R.mipmap.home));
         bottmeTab.getTabAt(3).setCustomView(getTabView("我",R.mipmap.home));
+
 
 
         navigationView.setItemIconTintList(null);
