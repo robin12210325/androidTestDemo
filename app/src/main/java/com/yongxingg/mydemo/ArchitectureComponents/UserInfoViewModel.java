@@ -1,7 +1,7 @@
 package com.yongxingg.mydemo.ArchitectureComponents;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.ViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
 
 /**
  * Created by gaoyongxing on 2018-11-12.

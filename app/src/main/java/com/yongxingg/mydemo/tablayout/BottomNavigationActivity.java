@@ -1,14 +1,6 @@
 package com.yongxingg.mydemo.tablayout;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabLayout;
 import com.yongxingg.mydemo.R;
 import com.yongxingg.mydemo.UI.androidUI.AndroidFragment;
 
@@ -23,6 +17,13 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 public class BottomNavigationActivity extends AppCompatActivity {
     private List<Fragment> fragmentList;
@@ -66,9 +67,9 @@ public class BottomNavigationActivity extends AppCompatActivity {
         iconPressList = Arrays.asList(bottomIconPress);
         fragmentList = new ArrayList<>();
         fragmentList.add(new WeakReference<>(AndroidFragment.newInstance("android")).get());
-        fragmentList.add(new WeakReference<>(BaseFragment.newInstance("图书")).get());
-        fragmentList.add(new WeakReference<>(BaseFragment.newInstance("图书")).get());
-        fragmentList.add(new WeakReference<>(BaseFragment.newInstance("图书")).get());
+        fragmentList.add(new WeakReference<>(BaseFragment.newInstance("发现")).get());
+        fragmentList.add(new WeakReference<>(BaseFragment.newInstance("个人")).get());
+        fragmentList.add(new WeakReference<>(BaseFragment.newInstance("我")).get());
 
         bottmeTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

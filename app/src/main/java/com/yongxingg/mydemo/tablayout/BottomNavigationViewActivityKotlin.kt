@@ -1,7 +1,7 @@
 package com.yongxingg.mydemo.tablayout
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.yongxingg.mydemo.R
 
 class BottomNavigationViewActivityKotlin : AppCompatActivity() {
