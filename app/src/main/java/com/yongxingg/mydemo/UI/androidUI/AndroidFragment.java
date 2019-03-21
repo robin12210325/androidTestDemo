@@ -34,7 +34,6 @@ public class AndroidFragment extends Fragment implements AndroidContracts.View{
     private AndroidRecycleViewAdapter myRecycleViewAdapter;
     List<AndroidModel.ResultsBean> beans = new ArrayList<>();
 
-    private Animator spruceAnimator;
     public static AndroidFragment newInstance(String info) {
         Bundle args = new Bundle();
         AndroidFragment fragment = new AndroidFragment();
@@ -62,7 +61,6 @@ public class AndroidFragment extends Fragment implements AndroidContracts.View{
 //                initSpruce();
             }
         };
-//        mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         myRecycleViewAdapter = new AndroidRecycleViewAdapter(this.getActivity());
         mRecyclerView.setAdapter(myRecycleViewAdapter);
@@ -97,13 +95,6 @@ public class AndroidFragment extends Fragment implements AndroidContracts.View{
 
             }
         });
-    }
-    private void initSpruce() {
-        spruceAnimator = new Spruce.SpruceBuilder(mRecyclerView)
-                .sortWith(new DefaultSort(100))
-                .animateWith(DefaultAnimations.shrinkAnimator(mRecyclerView, 800),
-                        ObjectAnimator.ofFloat(mRecyclerView, "translationX", -mRecyclerView.getWidth(), 0f).setDuration(800))
-                .start();
     }
     //获取数据
     private void getData(int pageNum){
